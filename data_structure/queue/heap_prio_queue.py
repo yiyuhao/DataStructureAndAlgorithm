@@ -1,5 +1,5 @@
 """
-    优先队列的堆实现
+    优先队列的堆实现(小顶堆)
     时间复杂度:
         堆构建    : O(n)
         插入与弹出: O(log n)
@@ -76,3 +76,18 @@ class PrioQueue:
         # 从所有分支节点(即堆的倒数第二层)遍历至顶点，逐个将该节点在所处子树上进行向下筛选
         for i in range(end // 2, -1, -1):
             self.siftdown(self._elems[i], i, end)
+
+    def sort(self):
+        """时间复杂度: O(n + nlogn)"""
+        self.build_heap()
+        for i in range((len(self._elems) - 1), 0, -1):
+            # 用堆顶替换末尾元素e，再拿着e执行向下筛选
+            e = self._elems[i]
+            self._elems[i] = self._elems[0]
+            self.siftdown(e, 0, i)
+
+
+if __name__ == '__main__':
+    q = PrioQueue([100, 99, 95, 93, 98, 97, 96, 92, 91, 90])
+    q.sort()
+    pass
