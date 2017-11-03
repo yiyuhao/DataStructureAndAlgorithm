@@ -12,10 +12,10 @@
 
 def kruskal(graph):
     """
-
     :param graph: 图G，需要具有property或函数G.vertex_num，与函数G.out_edges(vi)求顶点的所有邻接边
     :return:
     """
+
     # 获取G的边数
     v_num = graph.vertex_num
     # 代表元list，每个元素对应每个顶点的代表元
@@ -30,12 +30,12 @@ def kruskal(graph):
     # 按权低到高排序 O(nlogn)
     edges.sort()
 
-    # vi vi对应两条边
+    # vi vj对应两条边
     for w, vi, vj in edges:
         # 属于不同连通分量
         if reps[vi] != reps[vj]:
             # 记录这条边
-            rv.append((vi, vj), w)
+            rv.append(((vi, vj), w))
             # 生成了n-1条边，构造生成树完成
             if len(rv) == v_num - 1:
                 break
