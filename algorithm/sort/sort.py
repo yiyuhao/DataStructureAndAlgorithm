@@ -106,15 +106,40 @@ def bubble_sort2(lst):
         switch = not switch
 
 
+@timer
+def quick_sort(lst):
+    """
+          | 小记录  |   大记录 | 未排序片段
+        |R|   <R   i|   >=R   |j  ???   |
+
+        开始时
+        |R|                             |
+        |i|j
+    """
+
+    def qsort(lst, begin, end):
+        if begin >= end:
+            return
+        key = lst[begin]
+        i, j = begin, begin + 1
+        # 比较k与j
+        while j <= end:
+            # 小记录(或等于), i+1, 然后交换i和j的记录，j+1
+            if lst[j] < key:
+                i += 1
+                lst[i], lst[j] = lst[j], lst[i]
+            # 大记录也需要j+1
+            j += 1
+        # key插入小记录与大记录中
+        lst[begin], lst[i] = lst[i], lst[begin]
+        # 继续划分
+        qsort(lst, begin, i - 1)
+        qsort(lst, i + 1, end)
+
+    qsort(lst, 0, len(lst) - 1)
+
+
 if __name__ == '__main__':
-    # l = [4, 5, 3, 6, 7, 9, 0, 2, 1, 8] * 300
-
-    l = [i for i in range(3000)]
-    l.append(-100)
-    bubble_sort(l)
-    print(l)
-
-    l = [i for i in range(3000)]
-    l.append(-100)
-    bubble_sort2(l)
+    l = [4, 5, 3, 6, 7, 9, 0, 2, 1, 8] * 500
+    quick_sort(l)
     print(l)
