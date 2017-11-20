@@ -79,7 +79,7 @@ class Solution:
         segment = starts + ends
 
         # 对分段排序
-        sorted(segment, key=lambda x: x[0])
+        segment = sorted(segment, key=lambda x: x[0])
 
         # 选出每段最高的轮廓
         hashheap = HashHeap()
@@ -95,14 +95,27 @@ class Solution:
             else:
                 shadows.append((x, hashheap.max))
 
-        # 组合
-        pass
+        # 将连续的阴影拼成block, 放入最终结果
+        rv = []
+        block = [0, 0, 0]
+        for x, height in shadows:
+            # 初始赋值
+            if block == [0, 0, 0]:
+                block = [x, x + 1, height]
+            # 相同高度楼房
+            elif block[-1] == height:
+                block[1] = x + 1
+            # 不同高度楼房，将之前的block存入rv，再重设一个block
+            elif block[-1] != height:
+                block[1] = x
+                if block[-1] != 0:
+                    rv.append(block)
+                block = [x, x + 1, height]
 
+        return rv
 
 if __name__ == '__main__':
     s = Solution()
-    b = [(1, 4, 1),
-         (2, 4, 2),
-         (3, 4, 3),
-         (4, 7, 1)]
+    b = [(1, 7, 1),
+         (3, 5, 2)]
     s.buildingOutline(buildings=b)
