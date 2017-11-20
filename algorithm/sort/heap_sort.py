@@ -1,10 +1,11 @@
 def sort(elems):
+    """采用大顶堆排序"""
     def siftdown(elems, e, begin, end):
         p, c = begin, begin * 2 + 1
         while c < end:
-            if c + 1 < end and elems[c + 1] < elems[c]:
+            if c + 1 < end and elems[c + 1] > elems[c]:
                 c += 1
-            if e < elems[c]:
+            if e > elems[c]:
                 break
             else:
                 elems[p] = elems[c]
