@@ -1,27 +1,61 @@
-def quick_sort(lst):
-    def qsort(lst, begin, end):
-        """|R|  <R  i|  >=R   |j  ???  |"""
-        if begin >= end:
-            return
 
-        r = lst[begin]
-        i, j = begin, begin + 1
-        while j <= end:
-            if lst[j] < r:
-                i += 1
-                lst[i], lst[j] = lst[j], lst[i]
-            j += 1
+class Solution:
+    """
+    @param: head: The head of linked list.
+    @return: You should return the head of the sorted linked list, using constant space complexity.
+    """
 
-        lst[begin], lst[i] = lst[i], lst[begin]
+    def __init__(self):
+        self.lst = []
 
-        qsort(lst, begin, i - 1)
-        qsort(lst, i + 1, end)
+    def sortList(self, head):
+        # write your code here
+        if head is None:
+            return None
 
-    qsort(lst, 0, len(lst) - 1)
+        # trans to lst
+        p = head
+        while p:
+            self.lst.append(p.val)
+            p = p.next
 
-    return lst
+        # sort
+        self.quick_sort()
 
+        self.lst.reverse()
 
-if __name__ == '__main__':
-    a = quick_sort([2, 5, 1, -1, -3, 8, 22, 100, 32])
-    pass
+        # trans to llist
+        llist = ListNode(None)
+
+        p = llist
+        for i, val in enumerate(self.lst):
+            p.val = val
+            if i < len(self.lst) - 1:
+                p.next = ListNode(None)
+                p = p.next
+            else:
+                p.next = None
+
+        return llist
+
+    def quick_sort(self):
+
+        def q_sort(lst, begin, end):
+            """|R|  <R  i|  >= R |j  ???  |"""
+            if begin >= end:
+                return
+            r = lst[begin]
+            i, j = begin, begin + 1
+
+            while j <= end:
+                if lst[i] < r:
+                    i += 1
+                    lst[i], lst[j] = lst[j], lst[i]
+                j += 1
+
+            lst[begin], lst[i] = lst[i], lst[begin]
+
+            q_sort(lst, begin, i - 1)
+            q_sort(lst, i + 1, end)
+
+        q_sort(self.lst, 0, len(self.lst) - 1)
