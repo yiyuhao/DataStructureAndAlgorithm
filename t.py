@@ -1,61 +1,31 @@
-
-class Solution:
-    """
-    @param: head: The head of linked list.
-    @return: You should return the head of the sorted linked list, using constant space complexity.
-    """
-
-    def __init__(self):
-        self.lst = []
-
-    def sortList(self, head):
-        # write your code here
-        if head is None:
-            return None
-
-        # trans to lst
-        p = head
-        while p:
-            self.lst.append(p.val)
-            p = p.next
-
-        # sort
-        self.quick_sort()
-
-        self.lst.reverse()
-
-        # trans to llist
-        llist = ListNode(None)
-
-        p = llist
-        for i, val in enumerate(self.lst):
-            p.val = val
-            if i < len(self.lst) - 1:
-                p.next = ListNode(None)
-                p = p.next
+def sort(lst):
+    """采用大顶堆排序"""
+    def siftdown(elems, e, begin, end):
+        p, c = begin, begin * 2 + 1
+        while c <= end:
+            if c + 1 <= end and elems[c + 1] > elems[c]:
+                c += 1
+            if e < elems[c]:
+                elems[p] = elems[c]
+                p, c = c, c * 2 + 1
             else:
-                p.next = None
+                break
+        elems[p] = e
 
-        return llist
+    end = len(lst) - 1
+    # 构建堆
+    for i in range((end - 1) // 2, -1, -1):
+        siftdown(lst, lst[i], i, end)
 
-    def quick_sort(self):
+    # 排序
+    for i in range(end, 0, -1):
+        e = lst[i]
+        lst[i] = lst[0]
+        siftdown(lst, e, 0, i - 1)
 
-        def q_sort(lst, begin, end):
-            """|R|  <R  i|  >= R |j  ???  |"""
-            if begin >= end:
-                return
-            r = lst[begin]
-            i, j = begin, begin + 1
+    return lst
 
-            while j <= end:
-                if lst[i] < r:
-                    i += 1
-                    lst[i], lst[j] = lst[j], lst[i]
-                j += 1
 
-            lst[begin], lst[i] = lst[i], lst[begin]
-
-            q_sort(lst, begin, i - 1)
-            q_sort(lst, i + 1, end)
-
-        q_sort(self.lst, 0, len(self.lst) - 1)
+if __name__ == '__main__':
+    l = [4, 5, 3, 6, 7, 9, 11, 0, 2, 1, 8]
+    print(sort(l))
